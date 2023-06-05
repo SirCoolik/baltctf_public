@@ -1,0 +1,70 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                {% if request.user.is_authenticated %}
+                <div class="charts" style="padding-top: 30px;">
+                    <div class="chart-area">
+                        <canvas id="myChart">
+                            <p>Динамика прикрепленных ответов по времени</p>
+                        </canvas>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+                        <script>
+                            const ctx = document.getElementById('myChart');
+                            new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                datasets: [{% for stat in stats%}{
+                                    label: '{{ stat.name }}',
+                                    data: [{
+                                        x: '{{ start }}',
+                                        y: 0,
+                                    },
+                                        {% for statline in stat.stats %}{
+                                        x: '{{statline.time}}',
+                                        y: {{statline.score}},
+                                    },{% endfor %}]
+                                },{% endfor %}],
+                            },
+                            options: {
+                                scales: {
+                                    xAxes: [{
+                                        type: 'time',
+                                        time: {
+                                            parser: 'DD/MM/YYYY HH:mm:ss',
+                                            tooltipFormat: 'DD/MM/YYYY HH:mm:ss',
+                                            displayFormats: {
+                                                'hour': 'DD/MM/YYYY HH:mm:ss'
+                                            }
+                                        }
+                                    }],
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                        </script>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <table cellspacing="0" cellpadding="10" class="scoreboard-table">
+                        <tr>
+                            <th class="place">Место</th>
+                            <th class="name">{% if ctf.compete_type_id == 1 %}Команда{% else %}Имя пользователя{% endif %}</th>
+                            <th class="score">Счет</th>
+                        </tr>
+                        {% for score in score_list %}
+                        <tr>
+                            <td class="place">{{ forloop.counter }}.</td>
+                            <td class="name">{{ score.name }}</td>
+                            <td class="score">{{ score.total_points }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% else %}
+                <p style="padding-top: 20px; padding-bottom: 20px; text-align: center;">Для просмотра требуется войти!</p>
+                {% endif %}
+            </main>
+{% endblock %}

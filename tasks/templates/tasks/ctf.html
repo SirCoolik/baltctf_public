@@ -1,0 +1,145 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+{% load static %}
+            <main>
+            {% if status == 'running' or status == 'outdated' %}
+            <div class="category">
+                {% for cat in cats %}
+                {% if tasks %}
+                <div class="cat-title"><p>{{ cat.name }}</p></div>
+                <div class="all-tasks">
+                    {% for task in tasks %}
+                        {% if task.cat_id == cat.id %}
+
+                    <div class="task">
+                        <div class="task-name">
+                            <p><a href="#" class="btn" data-path="{% if request.user.is_authenticated %}{{ task.id }}{% else %}needed{% endif %}">{{task.name}} | {{task.score}}</a></p>
+                        </div>
+                        {% if task.id in solved_tasks %}
+                        <div class="ctf-solved">
+                            <p style="color: white;margin: 0 auto;line-height: 100px; font-size: 30px; font-weight: 700">✔</p>
+                        </div> {% endif %}
+                    </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+                {% if status == 'running' %}
+                    <div class="modals">
+                        <div class="modal-overlay">
+                            {% for task in tasks %}
+                            <div class="modal modal--{{ task.id }}" data-target="{{ task.id }}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">{{ task.name }} | {{ task.score }}</h3>
+                                        <div class="modal__close">×</div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="desc">{{ task.desc }}</p>
+                                        {% if task.attach %}
+                                        <table class="attach-table">
+
+                                            <tr>
+                                                <th class="attach-name">Имя файла</th>
+                                                <th>Ссылка для скачивания</th>
+                                            </tr>
+                                            {% for att in task.attach %}
+                                                <tr>
+                                                    <td class="attach-name">{{ att.name }}</td>
+                                                    <td><a href="{{ att.url }}" target="_blank">Скачать</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+                                        {% endif %}
+                                        <form method="post" class="submit-flag">
+                                            {% csrf_token %}
+                                            {% if task.id in solved_tasks %}
+                                            <p><input type="text" placeholder="Вы уже решили это задание!" disabled="disabled" class="solved"></input></p>
+                                            <p style="display: none;"><input type="text" name="task_id" class="hidden" required="" value="{{task.id}}" id="id_task_id"></p>
+                                            <button type="submit" disabled="disabled">Проверить</button>
+
+                                            {% else %}
+                                            <p>{{ form.answer }}</p>
+                                            <p style="display: none;"><input type="text" name="task_id" class="hidden" required="" value="{{task.id}}" id="id_task_id"></p>
+                                            <button type="submit">Проверить</button>
+
+                                            {% endif %}
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="modal modal--needed" data-target="needed">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">Ошибка! </h3>
+                                        <div class="modal__close">×</div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Для просмотра требуется войти!</p>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+
+                    <script>
+
+                        const btns = document.querySelectorAll('.btn');
+                        const modalOverlay = document.querySelector('.modal-overlay ');
+                        const modals = document.querySelectorAll('.modal');
+                        const close_btn = document.querySelectorAll('.modal__close')
+
+                        btns.forEach((el) => {
+                            el.addEventListener('click', (e) => {
+                                let path = e.currentTarget.getAttribute('data-path');
+
+                                modals.forEach((el) => {
+                                    el.classList.remove('modal--visible');
+                                });
+
+                                document.querySelector(`[data-target="${path}"]`).classList.add('modal--visible');
+                                modalOverlay.classList.add('modal-overlay--visible');
+
+                            });
+                        });
+
+                        modalOverlay.addEventListener('click', (e) => {
+                            // console.log(e.target);
+                            history.pushState("", document.title, window.location.pathname);
+
+                            if (e.target == modalOverlay) {
+                                modalOverlay.classList.remove('modal-overlay--visible');
+                                modals.forEach((el) => {
+                                    el.classList.remove('modal--visible');
+
+                                });
+                            }
+                        });
+                        close_btn.forEach((el) => {
+                            el.addEventListener('click', (e) => {
+                                if (e.target) {
+                                    modalOverlay.classList.remove('modal-overlay--visible');
+                                    history.pushState("", document.title, window.location.pathname);
+                                    modals.forEach((el) => {
+                                        el.classList.remove('modal--visible');
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+            {% endif %}
+            {% else %}
+                <p style="padding: 15px; text-align: center;"> Соревнование ещё не началось! Дождитесь начала и повторите попытку. </p>
+            {% endif %}
+            </main>
+{% endblock %}

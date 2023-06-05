@@ -1,0 +1,76 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+{% load static %}
+<main>
+    {% if request.user.is_authenticated%}
+    <div>
+        <div class="profile-stats">
+            <div class="profile-stat">
+                <div class="list-stat top-bottom">
+
+                    <p style="font-size: 30px; font-weight: 600;">{{ username }} топ#{{ top }}</p>
+                    <p>Выше {{ mvp }}% участников</p>
+                </div>
+            </div>
+            <div class="profile-stat">
+                <div class="list-stat">
+                    <p>Решено</p>
+                    <p class="num-stat">{{ tasks_solved }}</p>
+                    <p>заданий</p>
+                </div>
+            </div>
+            <div class="profile-stat">
+                <div class="list-stat">
+                    <p>Набрано</p>
+                    <p class="num-stat">{{ tasks_points }}</p>
+                    <p>очков в архиве</p>
+                </div>
+            </div>
+            <div class="profile-stat">
+                <div class="list-stat top-bottom">
+                    <p>Команда</p>
+                    {% if team %}
+                    <p><a href="{% url 'team' team_id=team.id %}" style="color: #ffffff;">{{ team }}</a></p>
+                    {% else %}
+                    <p>пока нет команды</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-stat">
+                <div class="list-stat">
+                    <p>Участие в</p>
+                    <p class="num-stat">{{ ctf_part }}</p>
+                    <p>CTF</p>
+                </div>
+            </div>
+            <div class="profile-stat">
+                <div class="list-stat">
+                    <p>Набрано</p>
+                    <p class="num-stat">{{ ctf_points }}</p>
+                    <p>очков в CTF</p>
+                </div>
+            </div>
+        </div>
+        {% if self %}
+        <div class="maintenance"><p>Управление учетной записью</p>
+        <ul class="maintenance-list">
+            {% if team %}
+            <li>Команда
+                <ul class="maintenance-inner-list">
+                    <li><a href="{% url 'team' team_id=team.id %}"> Управление командой</a></li>
+                    <li><a href="{% url 'leave_team' %}"> Покинуть команду</a></li>
+                </ul>
+            </li>{% endif %}
+            <li>Личное
+                <ul class="maintenance-inner-list">
+                    <li><a href="{% url 'change_pass' %}">Сменить пароль</a></li>
+                </ul>
+            </li>
+        </ul>
+        </div> {% endif %}
+    </div>
+    {% else %}
+    <p style="padding-top: 20px; padding-bottom: 20px; text-align: center;">Для просмотра требуется войти!</p>
+    {% endif %}
+</main>
+{% endblock %}

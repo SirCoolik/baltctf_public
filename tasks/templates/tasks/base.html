@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'tasks/css/main.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,150&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{%  static 'tasks/images/favicon.ico' %}">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <section class="banner">
+        <div class="container">
+            <div class="navbar-top">
+                <div class="navbar">
+                    <a href="/"><img src="{% static 'tasks/images/logo.png' %}" alt="Лого"></a>
+                    <nav>
+                        <ul>
+                            <li><a href="{% url 'ctfs' %}">CTF</a></li>
+                            <li><a href="{% url 'categories' %}">Архив заданий</a></li>
+                            <li><a href="{% url 'teams' %}">Команды</a></li>
+                            <!-- <li><a href="#">FAQ</a></li> -->
+                            {% if request.user.is_authenticated %}
+                            <li><a href="{% url 'profile' username=user.username %}">Профиль</a></li>
+                            <li>Вы вошли как {{ user.username }} | <a href="{% url 'logout' %}" class="btn">Выйти</a></li>
+                            {% else %}
+                            <li><a href="{% url 'register' %}" class="btn" data-path="register">Регистрация</a> | <a href="{% url 'login' %}" class="btn" data-path="login">Войти</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="title">{{ title }}</div>
+
+            {% block content %}
+            {% endblock %}
+
+            {% if 2 == 1 %}
+            <div class="modals">
+<!--                        <div class="modal-overlay">-->
+<!--                            <div class="modal modal&#45;&#45;login" data-target="login">-->
+<!--                                <div class="modal-dialog">-->
+<!--                                    <div class="modal-content">-->
+<!--                                        <div class="modal-header">-->
+<!--                                            <h3 class="modal-title">Вход</h3>-->
+<!--                                            <div class="modal__close">×</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="modal-body">-->
+<!--                                            <div class="login">-->
+<!--                                            <div id="login-error-msg-holder">-->
+<!--                                              <p id="login-error-msg">Нeправильное имя пользователя <span id="error-msg-second-line">и/или пароль</span></p>-->
+<!--                                            </div>-->
+
+<!--                                            <form id="login-form">-->
+<!--                                                <input type="text" name="username" id="username-field" class="login-form-field" placeholder="Username or Email">-->
+<!--                                                <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">-->
+<!--                                                <div class="remember-me">-->
+<!--                                                    <input type="checkbox" name="remember_me"/>-->
+<!--                                                    Оставаться авторизованным в течение месяца-->
+<!--                                                </div>-->
+<!--                                                <div class="forgot-pwd">-->
+<!--                                                    <a href="#" class="btn" data-path="forgot">Забыли пароль?</a>-->
+<!--                                                </div>-->
+<!--                                                <div class="forgot-pwd">-->
+<!--                                                    <a href="#" class="btn" data-path="register">Создать аккаунт</a>-->
+<!--                                                </div>-->
+<!--                                                <input type="submit" value="Войти" id="login-form-submit">-->
+<!--                                                </form>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal modal&#45;&#45;forgot" data-target="forgot">-->
+<!--                                <div class="modal-dialog">-->
+<!--                                    <div class="modal-content">-->
+<!--                                        <div class="modal-header">-->
+<!--                                            <h3 class="modal-title">Восстановление пароля</h3>-->
+<!--                                            <div class="modal__close">×</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="modal-body">-->
+<!--                                            <div class="reset">-->
+<!--                                                <div class="form">-->
+<!--                                                    <p class="email">Пожалуйста, введите адрес электронной почты, на который зарегистрирован аккаунт</p>-->
+<!--                                                    <label class="form-label" for="email">Email</label>-->
+<!--                                                    <input class="form-control" id="email" name="email" required="" type="email" value="">-->
+<!--                                                </div>-->
+<!--                                                <div class="submit">-->
+<!--                                                    <input class="submit-btn" id="_submit" name="_submit" type="submit" value="Отправить">-->
+<!--                                                </div>-->
+
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="modal modal&#45;&#45;register" data-target="register">-->
+<!--                                <div class="modal-dialog">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header">-->
+<!--                                <h3 class="modal-title">Регистрация</h3>-->
+<!--                                <a href="#close" title="Close" class="close">×</a>-->
+<!--                            </div>-->
+<!--                            <div class="modal-body">-->
+<!--                                <div class="register">-->
+<!--                                    <form action="">-->
+<!--                                        <div class="reg-container">-->
+<!--                                            <p>Пожалуйста, заполните эту форму для создания аккаунта</p>-->
+<!--                                            <hr>-->
+<!--                                            <div class="reg-form">-->
+<!--                                                <label for="login"><b>Login</b></label>-->
+<!--                                                <input type="text" placeholder="Введите логин" name="login" required>-->
+
+<!--                                                <label for="email"><b>Email</b></label>-->
+<!--                                                <input type="text" placeholder="Введите email" name="email" required>-->
+
+<!--                                                <label for="psw"><b>Пароль</b></label>-->
+<!--                                                <input type="password" placeholder="Введите пароль" name="psw" required>-->
+
+<!--                                                <label for="psw-repeat"><b>Повторите пароль</b></label>-->
+<!--                                                <input type="password" placeholder="Повторите пароль" name="psw-repeat" required>-->
+<!--                                                <hr>-->
+
+<!--                                                <button type="submit" class="registerbtn">Создать аккаунт</button>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+
+<!--                                                    <div class="signin">-->
+
+<!--                                                    <p>Уже есть аккаунт?<a href="#" class="btn" data-path="login">Войти</a></p>-->
+<!--                                                    </div>-->
+<!--                                                </form>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                </div>  <!-- end modals-->
+
+            <!-- auth -->
+
+            <script>
+                        const btns = document.querySelectorAll('.btn');
+                        const modalOverlay = document.querySelector('.modal-overlay ');
+                        const modals = document.querySelectorAll('.modal');
+                        const close_btn = document.querySelectorAll('.modal__close')
+
+                        btns.forEach((el) => {
+                            el.addEventListener('click', (e) => {
+                                let path = e.currentTarget.getAttribute('data-path');
+
+                                modals.forEach((el) => {
+                                    el.classList.remove('modal--visible');
+                                });
+
+                                document.querySelector(`[data-target="${path}"]`).classList.add('modal--visible');
+                                modalOverlay.classList.add('modal-overlay--visible');
+                            });
+                        });
+
+                        modalOverlay.addEventListener('click', (e) => {
+                            // console.log(e.target);
+
+                            if (e.target == modalOverlay) {
+                                modalOverlay.classList.remove('modal-overlay--visible');
+                                modals.forEach((el) => {
+                                    el.classList.remove('modal--visible');
+                                });
+                            }
+                        });
+                        close_btn.forEach((el) => {
+                            el.addEventListener('click', (e) => {
+                                if (e.target) {
+                                    modalOverlay.classList.remove('modal-overlay--visible');
+                                    modals.forEach((el) => {
+                                        el.classList.remove('modal--visible');
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+            {% endif %}
+            <footer>
+                <hr>
+                <p>© 2022 — 2023 Команда CTF-площадки Балтийского федерального университета имени Иммануила Канта</p>
+            </footer>
+        </div>
+    </section>
+</body>
+</html>

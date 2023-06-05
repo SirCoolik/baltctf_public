@@ -1,0 +1,32 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="register">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="reg-container">
+                          <p>Пожалуйста, заполните эту форму для смены пароля</p>
+                          <hr>
+                            <div class="reg-form">
+                                {{ form.as_p }}
+<!--                                <label for="login"><b>Login</b></label>-->
+<!--                                <input type="text" placeholder="Введите логин" name="login" required>-->
+
+<!--                                <label for="email"><b>Email</b></label>-->
+<!--                                <input type="text" placeholder="Введите email" name="email" required>-->
+<!--                            -->
+<!--                                <label for="psw"><b>Пароль</b></label>-->
+<!--                                <input type="password" placeholder="Введите пароль" name="psw" required>-->
+<!--                            -->
+<!--                                <label for="psw-repeat"><b>Повторите пароль</b></label>-->
+<!--                                <input type="password" placeholder="Повторите пароль" name="psw-repeat" required>-->
+                                <hr>
+
+                                <button type="submit" class="registerbtn">Сменить пароль</button>
+                            </div>
+                        </div>
+                      </form>
+                </div>
+            </main>
+{% endblock %}

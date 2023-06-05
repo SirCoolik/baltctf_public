@@ -1,0 +1,30 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="add">
+                    {% if not request.user.is_authenticated %}<p style="padding-top: 20px; padding-bottom: 20px;">Для просмотра этой страницы необходимо войти в аккаунт</p>
+                    {% elif error %} <p style="text-align: center; padding-top: 20px; padding-bottom: 20px;"> {{ error }}</p>
+                    {% else %}
+
+
+
+                        <div class="add-container">
+                          <p style="font-size: 18px;">Необходимо подтвердить {% if action == 'join' %} вступление в команду {% else %} выход из команды {% endif %} {{ team.name }}!</p>
+                          <hr>
+                          <div class="add-form">
+                              <p> <b>{{ username }}</b>, Вы действительно хотите {% if action == 'join' %} вступить в {% else %} покинуть {% endif %} команду {{ team.name }}?</p>
+
+
+                                <hr>
+                                <form method="post">
+                                    {% csrf_token %}
+                                <button type="submit" class="addbutton">{% if action == 'join' %} Вступить {% else %} Покинуть {% endif %}</button>
+                                </form>
+                                <a href="{% url 'teams' %}"><button class="addbutton">Отмена</button></a>
+                          </div>
+                        </div>
+
+                    {% endif %}
+                </div>
+            </main>
+{% endblock %}

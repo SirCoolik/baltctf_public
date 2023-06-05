@@ -1,0 +1,22 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="add">
+                    {% if not request.user.is_authenticated %}<p style="padding-top: 20px; padding-bottom: 20px;">Для просмотра этой страницы необходимо войти в аккаунт</p>
+                    {% elif error %} <p style="text-align: center; padding-top: 20px; padding-bottom: 20px;"> {{ error }}</p>
+                    {% else %}
+                        <div class="add-container">
+                          <p style="font-size: 18px;">Выберите, кого необходимо исключить из команды</p>
+                          <hr>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                <button type="submit" class="addbutton">Выгнать</button>
+                                </form>
+                                <a href="{% url 'team' team_id=team.id %}"><button class="addbutton">Отмена</button></a>
+                          </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+{% load static %}
+<main>
+    {% if request.user.is_authenticated %}
+    {% if is_in_team and not is_default %}
+    <div>
+        <div class="maintenance"><p>Управление командой</p>
+        <ul class="maintenance-list">
+            {% if is_cpt %}
+            <li>Капитан
+                <ul class="maintenance-inner-list">
+                    <li><a href="{% url 'kick_team' %}">Выгнать участника</a></li>
+                    <li><a href="{% url 'change_cpt' %}">Передать статус капитана</a></li>
+                    <li><a href="{% url 'open_team' %}">Открыть/закрыть вступление в команду</a></li>
+                    <li><a href="{% url 'delete_team' %}">Удалить команду</a></li>
+                </ul>
+            </li>{% endif %}
+            <li>Участник команды
+                <ul class="maintenance-inner-list">
+                    <li><a href="{% url 'leave_team' %}"> Покинуть команду</a></li>
+                </ul>
+            </li>
+        </ul>
+        </div> {% endif %}
+        <div class="team-table">
+            <p style="font-weight: 600;">Список участников команды: </p>
+            <table class="team" cellpadding="5" cellspacing="1">
+                <tr class="team-inner">
+                    <td class="cpt">★</td>
+                    <td>{{ cpt.username }}</td>
+                </tr>
+                {% for member in members %}
+                {% if not member.username == cpt.username %}
+                <tr>
+                    <td></td>
+                    <td>{{ member.username }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    {% elif not is_default%}
+    <p style="padding-top: 20px; padding-bottom: 20px; text-align: center;">Для просмотра требуется войти!</p>
+    {% endif %}
+</main>
+{% endblock %}

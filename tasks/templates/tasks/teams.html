@@ -1,0 +1,42 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                {% if request.user.is_authenticated %}
+                <div class="teams">
+                    <table cellspacing="0" cellpadding="0" class="teams-table">
+                        <tr>
+                            <th>Название команды</th>
+                            <th>Место в топе</th>
+                            <th>Количество очков</th>
+                            <th>Капитан команды</th>
+                            <th>Веб-ресурс команды</th>
+                        </tr>
+                        {% if not has_team %}
+
+                        <tr>
+                                <td colspan="5" style="text-align: center;"><a href="{% url 'add_team' %}">Создать свою команду!</a></td>
+                            </tr>
+                        {% endif %}
+                        {% for team in teams %}
+                        {% if not team.is_hidden %}
+                            <tr>
+                                <td>
+                                    {% if request.user.is_authenticated and not has_team and team.is_open%}
+                                        <a href="{% url 'join_team' team_id=team.id %}"><input type="submit" name="join-team" value="+" style="border-radius: 20px; background-color: #000000; color: #FFFFFF; width: 15px;"></a>
+                                    {% endif %}
+                                    <a href="{% url 'team' team_id=team.id %}" style="color:black;">{{ team.name }}</a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-decoration: italic;">{{ team.cpt }}</td>
+                                <td><a href="{{ team.url }}">{{ team.url }}</a></td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </table>
+                </div>
+                {% else %}
+                <p style="padding-top: 20px; padding-bottom: 20px; text-align: center;">Для просмотра требуется войти!</p>
+                {% endif %}
+            </main>
+{% endblock %}

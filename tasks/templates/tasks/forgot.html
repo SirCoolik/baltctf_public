@@ -1,0 +1,16 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="reset">
+                    <div class="form">
+                        <p class="email">Пожалуйста, введите адрес электронной почты, на который зарегистрирован аккаунт</p>
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-control" id="email" name="email" required="" type="email" value="">
+                    </div>
+                    <div class="submit">
+                        <input class="submit-btn" id="_submit" name="_submit" type="submit" value="Отправить">
+                    </div>
+                    
+                </div>
+            </main>
+{% endblock %}

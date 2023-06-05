@@ -1,0 +1,24 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="add">
+                    {% if not request.user.is_authenticated %}<p style="padding-top: 20px; padding-bottom: 20px;">Для просмотра этой страницы необходимо войти в аккаунт</p>
+                    {% elif error %} <p style="text-align: center; padding-top: 20px; padding-bottom: 20px;">{{ error }}</p>
+                    {% else %}
+                        <div class="add-container">
+                          <p style="font-size: 18px;">Необходимо подтвердить регистрацию на CTF!</p>
+                          <hr>
+                          <div class="add-form">
+                              <p> <b>{{ username }}</b>, Вы действительно хотите зарегистрироваться на {{ ctf_name }}?</p>
+                                <hr>
+                                <form method="post">
+                                    {% csrf_token %}
+                                <button type="submit" class="addbutton">Зарегистрироваться</button>
+                                </form>
+                                <a href="{% url 'ctfs' %}"><button class="addbutton">Отмена</button></a>
+                          </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </main>
+{% endblock %}

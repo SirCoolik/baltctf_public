@@ -1,0 +1,26 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="register">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="reg-container">
+                          <p>Пожалуйста, заполните эту форму для создания аккаунта</p>
+                          <hr>
+                            <div class="reg-form">
+                                <p style="padding-bottom: 10px;">Пожалуйста, не используйте в качестве логина ваши имя и фамилию, а также любые буквы русского алфавита(кириллические) </p>
+                                {{ form.as_p }}
+                                <hr>
+
+                                <button type="submit" class="registerbtn">Создать аккаунт</button>
+                            </div>
+                        </div>
+
+                        <div class="signin">
+                          <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>.</p>
+                        </div>
+                      </form>
+                </div>
+            </main>
+{% endblock %}

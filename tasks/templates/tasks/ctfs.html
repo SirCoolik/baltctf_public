@@ -1,0 +1,101 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+            <main>
+                <div class="section soon">
+                    <p>Скоро начало</p>
+                    <table cellspacing="0" cellpadding="0" class="main-table">
+                        <tr>
+                            <th class="ctf-name">Название</th>
+                            <th class="date">Дата и время начала</th>
+                            <th class="date">Дата и время окончания</th>
+                            <th class="users">Количество участников</th>
+                        </tr>
+
+                        {% for c in incoming %}
+                        <tr>
+                            <td>
+                                {% if request.user.is_authenticated %}
+                                {% if c.id in reg_list %}<a href="/ctfs/{{c.slug}}">{{ c.name }}</a>
+                                {% else %}<a href="/ctf_reg/{{c.slug}}">{{ c.name }}</a>{% endif %}
+                                {% else %}
+                                {{ c.name }}
+                                {% endif %}
+                            </td>
+                            <td>{{ c.start_date }}</td>
+                            <td>{{ c.end_date }}</td>
+                            <td>{{ c.reg }}</td>
+                        </tr>
+                        {% endfor %}
+                        </table>
+                </div>
+
+                <div class="section now-running">
+                    <p>Сейчас идут</p>
+                    <table cellspacing="0" cellpadding="0" class="main-table">
+                        <tr>
+                            <th class="ctf-name">Название</th>
+                            <th class="date">Дата и время начала</th>
+                            <th class="date">Дата и время окончания</th>
+                            <th class="users">Количество участников</th>
+                        </tr> 
+                        {% for c in running %}
+                        <tr>
+                            <td>
+                                {% if request.user.is_authenticated %}
+                                {% if c.id in reg_list %}<a href="/ctfs/{{c.slug}}">{{ c.name }}</a>
+                                {% else %}<a href="/ctf_reg/{{c.slug}}">{{ c.name }}</a>{% endif %}
+                                {% else %}
+                                {{ c.name }}
+                                {% endif %}
+                            </td>
+                            <td>{{ c.start_date }}</td>
+                            <td>{{ c.end_date }}</td>
+                            <td>{{ c.reg }}</td>
+                        </tr>{% endfor %}
+                        </table>
+                </div>
+                <div class=" section finished">
+                    <p>Завершены</p>
+                    <table cellspacing="0" cellpadding="0" class="main-table">
+                        <tr>
+                            <th class="ctf-name">Название</th>
+                            <th class="date">Дата и время начала</th>
+                            <th class="date">Дата и время окончания</th>
+                            <th class="users">Количество участников</th>
+                        </tr> 
+                        {% for c in outdated %}
+                        <tr>
+                            <td>
+                                {% if request.user.is_authenticated %}
+                                <a href="/ctfs/{{c.slug}}">{{ c.name }}</a>
+                                {% else %}
+                                {{ c.name }}
+                                {% endif %}
+                            </td>
+                            <td>{{ c.start_date }}</td>
+                            <td>{{ c.end_date }}</td>
+                            <td>{{ c.reg }}</td>
+                        </tr>
+                        {% endfor %}
+                        </table>
+                </div>
+
+                <div class="modals">
+                        <div class="modal-overlay">
+                            <div class="modal modal--needed" data-target="needed">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Ошибка! </h3>
+                                            <div class="modal__close">×</div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Для просмотра требуется войти!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </main>
+{% endblock %}

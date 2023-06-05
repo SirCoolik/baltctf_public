@@ -1,0 +1,23 @@
+{% extends 'tasks/base.html'%}
+{% block content %}
+{% load static %}
+            <main>
+                {% if cats %}
+                <div class="all-cats">
+
+                    {% for cat in cats %}
+                        <div class="cat">
+                            <div class="cat-logo">
+                                <img src="{% static 'tasks/images/cat_logo/' %}{{ cat.cat_logo }}" alt="Логотип категории">
+                            </div>
+                            <div class="cat-name">
+                                <p><a href="/challenges/{{cat.slug}}/" title="{{ cat.desc }}">{{ cat.name }}</a></p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                    {% else %}
+                    <p class="empty">Задания скоро появятся!</p>
+                {% endif %}
+            </main>
+{% endblock %}
